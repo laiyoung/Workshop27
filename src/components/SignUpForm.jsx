@@ -1,7 +1,7 @@
+import React from "react";
 import { useState, useEffect } from "react";
 
-
-function SignUpForm() {
+function SignUpForm({setToken}) {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -9,7 +9,8 @@ function SignUpForm() {
   });
 
   useEffect(() => {
-    console.log(formData)
+    // console.log(formData);
+    // Activate log if you want to see the dynamic update at work!
   }, [formData]);
 
   function handleChange(event) {
@@ -21,21 +22,40 @@ function SignUpForm() {
   }
 
   async function handleSubmit(event) {
-        event.preventDefault();
-    
-        try {
-        } catch (error) {
-          setFormData((prevData) => ({
-                ...prevData,
-                error: error.message,
-              }));
+    event.preventDefault();
+
+    try {
+      const promise = await fetch(
+        "https://fsa-jwt-practice.herokuapp.com/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
         }
+      );
+      const response = await promise.json();
+      setToken(response.token);
+
+      console.log(response);
+
+      if (!response.success) {
+        throw response.error;
       }
+    } catch (error) {
+      setFormData((prevData) => ({
+        ...prevData,
+        error: error.message,
+      }));
+    }
+  }
 
   return (
     <>
       <div>
         <h2>Sign Up!</h2>
+        {formData.username ? <h3>Welcome {formData.username}!</h3> : null}
         {formData.error && <p>{formData.error}</p>}
 
         <form onSubmit={handleSubmit}>
@@ -59,7 +79,7 @@ function SignUpForm() {
             {/* The type=password is obfuscation */}
           </label>
 
-          <input type="submit" value="Submit"/>
+          <input type="submit" value="Submit" />
         </form>
       </div>
     </>

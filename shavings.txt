@@ -1,0 +1,15 @@
+const promise = await fetch(API_URL + "/players", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(playerObj),
+    });
+    const response = await promise.json();
+    // console.log(response);
+
+    if (!response.success) {
+      throw response.error;
+    }
+
+    {username ? <h1>Welcome {username}!</h1> : null}
