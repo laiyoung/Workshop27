@@ -13,3 +13,14 @@ const promise = await fetch(API_URL + "/players", {
     }
 
     {username ? <h1>Welcome {username}!</h1> : null}
+
+     //  Trying to add input validations, but failing:
+   useEffect(() => {
+    function validateUsername() {
+      const regex = /^[a-zA-Z0-9]+$/;
+      return regex.test(formData.username);
+    }
+    if (!validateUsername(formData.username)) {
+      setFormData("Username should only contain alphanumeric characters.");
+    } 
+}, [formData.username]);

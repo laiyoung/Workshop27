@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-function SignUpForm({setToken}) {
+function SignUpForm({ setToken }) {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -66,17 +66,23 @@ function SignUpForm({setToken}) {
               name="username"
               value={formData.username}
               onChange={handleChange}
+              pattern=".{2,}"
+              title="Username must be 2 or more characters"
+              required
             />
           </label>
           <label htmlFor="password">
-            Password:{" "}
+            Password :{" "}
             <input
               type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
+              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+              title="Password must contain at least 1 number and 1 uppercase and lowercase letter, and at least 8 or more characters"
+              required
             />
-            {/* The type=password is obfuscation */}
+            {/* The type=password is for obfuscation */}
           </label>
 
           <input type="submit" value="Submit" />
